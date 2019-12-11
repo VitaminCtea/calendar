@@ -1,0 +1,533 @@
+@import 'variable.sass'
+@import 'mixin.sass'
+
+@function pxToEm($px)
+    @return $px / 10 * 1em
+
+body
+    font-size: 62.5%
+    font-family: 'PingFang SC Regular'
+    user-select: none
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+.viewContainer
+    position: relative
+    display: flex
+    width: pxToEm(900)
+    @include container_box_shadow
+    margin-top: 20px
+    margin-left: 20px
+    overflow: hidden
+    .reminders
+        position: absolute
+        left: 0
+        top: 0
+        width: 100%
+        height: 100%
+        background-color: #fff
+        .main
+            height: 100%
+            .header
+                display: flex
+                justify-content: space-around
+                align-items: center
+                padding: pxToEm($padding_top_bottom)
+                border-bottom: 1px solid #ccc
+                .dateContent
+                    width: pxToEm(100)
+                    .date
+                        font-size: 22px
+                        font-weight: bold
+                        margin-bottom: pxToEm(2)
+                .icon
+                    display: flex
+                    flex-direction: row
+                    .icon-container
+                        margin-right: 10px
+                    .icon-container, .icon-container
+                        position: relative
+                        width: 100%
+                        .layer, .layer2
+                            position: absolute
+                            left: 0
+                            top: 110%
+                            padding: 10px 20px
+                            text-align: center
+                            white-space: nowrap
+                            border-radius: 6px
+                            color: $color
+                            background-color: #5f6368
+                            opacity: 0
+                            transform: scale(0)
+                            transform-origin: 50% 50%
+                            transition: all .2s
+                            transition-delay: .2s  
+                        .icon-arrow-left1, .icon-arrow-right1
+                            display: inline-block
+                            @include icon_public_style
+                            font-size: 40px
+                            &:hover
+                                cursor: pointer
+                        .icon-arrow-left1:hover + .layer, .icon-arrow-right1:hover + .layer2
+                            opacity: 1
+                            transform: scale(1)
+                        .icon-arrow-left1::before
+                            height: .25em
+                            width: .25em
+                            border-style: solid
+                            border-width: 2px 0 0 2px
+                            -ms-transform: translate(-25%, -50%) rotate(-45deg)
+                            transform: translate(-25%, -50%) rotate(-45deg)
+                        .icon-arrow-right1::before
+                            height: .25em
+                            width: .25em
+                            border-style: solid
+                            border-width: 2px 0 0 2px
+                            -ms-transform: translate(-75%, -50%) rotate(135deg)
+                            transform: translate(-75%, -50%) rotate(135deg)
+                .select
+                    position: relative
+                    .button
+                        width: 50px
+                        height: 26px
+                        border: 1px solid #ccc
+                        border-radius: 5px
+                        cursor: pointer
+                        position: relative
+                        line-height: 36px
+                        display: flex
+                        justify-content: space-around
+                        align-items: center
+                        padding: 10px
+                        .icon-caret
+                            @include icon_public_style
+                            &::before
+                                border: .3em solid transparent;
+                                border-top-color: currentColor;
+                                -ms-transform: translate(-50%, -25%);
+                                transform: translate(-50%, -25%);
+                    .list
+                        display: inline-block
+                        position: absolute
+                        left: -10%
+                        top: 130%
+                        background-color: #fff
+                        box-shadow: 2px 2px 10px #ccc
+                        border-radius: 6px
+                        padding: 6px 0
+                        transform: translate3d(0, -10px, 0) scale(0)
+                        transform-origin: 5% top
+                        transition: all .3s
+                        opacity: 0
+                        z-index: 999
+                        .details
+                            display: flex
+                            justify-content: space-around
+                            align-items: center
+                            width: 150px
+                            height: 49px
+                            cursor: pointer
+                            &:hover
+                                background-color: #f3f3f3
+            #routerView
+                width: 100%
+                height: calc(100% - 68px)
+                overflow-y: auto
+                &::-webkit-scrollbar
+                    width: 6px
+                    height: 1px
+                &::-webkit-scrollbar-thumb
+                    border-radius: 10px
+                    background-color: #333
+                &::-webkit-scrollbar-thumb:hover
+                    background-color: #ccc
+                .view
+                    width: 100%
+                    height: calc(100% - 10px)
+                    border-collapse: collapse
+                    border-spacing: 0
+                    tbody
+                        width: 100%
+                        height: 100%
+                        tr 
+                            td
+                                position: relative
+                                border: 1px solid #ccc
+                                font-weight: bold
+                                .c
+                                    position: absolute
+                                    left: 50%
+                                    top: 10%
+                                    transform: translate(-50%, 0)
+                                    width: 100%
+                                    text-align: center
+                                    .other
+                                        margin-top: 6px
+                                        .d
+                                            color: #45403d
+                                        .l
+                                            color: #70757b
+                                        .disableD, .disableL
+                                            color: #999
+                                        .currentDay
+                                            display: inline-block
+                                            width: 26px
+                                            height: 26px
+                                            border-radius: 50%
+                                            background-color: $current_date
+                                            color: #fff
+                                            vertical-align: middle
+                                            line-height: 26px
+                                        .currentLunarDay
+                                            display: inline-block
+                                            vertical-align: middle
+                                            color: $current_date
+                .content
+                    display: flex
+                    justify-content: space-between
+                    flex-wrap: nowrap
+                    padding: 10px 0
+                    overflow: hidden
+                    .time
+                        margin-bottom: -9999px
+                        padding-bottom: 9999px
+                        .placeholder
+                            height: 58px
+                        ul
+                            width: 80px
+                            table-layout: fixed
+                            border-right: 1px solid #ccc
+                            li
+                                height: 43px
+                                text-align: center
+                    .viewTable
+                        width: 100%
+                        height: 105.5%
+                        padding-bottom: 9999px
+                        margin-bottom: -9999px
+                        table
+                            width: 100%
+                            height: 100%
+                            table-layout: fixed
+                            thead
+                                th
+                                    border-bottom: 1px solid #ccc
+                                    .date1, .current
+                                        margin-bottom: 10px
+                                        .content1
+                                            margin-top: 6px
+                                            .day1
+                                                display: block
+                                    .current
+                                        color: $current_date
+                            tbody
+                                td
+                                    border-bottom: 1px solid #ccc
+                                    border-right: 1px solid #ccc
+                                    height: 40px
+                                &:last-child
+                                    border-bottom: none
+                .yearContent
+                    display: flex
+                    justify-content: space-around
+                    flex-wrap: wrap
+                    align-items: center
+                    height: calc( 100% - 9px )
+                    padding: 20px 0 40px 0
+                    .itemYear
+                        flex: 1 1 calc( 100% / 4 )
+                        display: flex
+                        flex-direction: column
+                        justify-content: center
+                        .weekContainer
+                            height: 32px
+                            line-height: 32px
+                            text-align: center
+                            .week
+                                font-family: 'Google Sans', Roboto, Arial, sans-serif
+                        table
+                            width: 80%
+                            height: 100%
+                            margin: 0 auto
+                            table-layout: fixed
+                            thead, tbody
+                                width: 100%
+                                height: 100%
+                            tbody
+                                text-align: center
+                                .remainder, .disableDay
+                                    color: #999
+                                .td, .current, .disableDay
+                                    width: 24px
+                                    height: 24px
+                                    line-height: 24px
+                                    margin: 0 auto
+                                .td:hover
+                                    border-radius: 50%
+                                    background-color: #ccc
+                                    cursor: pointer
+                                .current
+                                    background-color: RGB(28, 114, 233)
+                                    color: #fff
+                                    border-radius: 50%
+                                    &:hover
+                                        cursor: pointer
+    .detailsContent
+        display: flex
+        width: 80%
+        min-height: 1em
+        box-sizing: border-box
+        font-weight: lighter
+        background-color: $background_color
+        color: $color
+        @include container_box_shadow
+        padding-right: pxToEm($padding_left_right)
+        .squareBar
+            width: pxToEm(26)
+            height: 100%
+            background-color: $square_bar
+            margin-right: pxToEm(20)
+            @include squareBar_box_shadow
+        .dateContent
+            width: 100%
+            .headerIcon
+                padding: pxToEm($padding_left_right) 0
+                display: flex
+                justify-content: space-between
+                align-items: center
+                .icon-menu
+                    display: inline-block
+                    width: 32px
+                    height: 3px
+                    padding: 6px 0
+                    border-top: 3px solid $icon_background_color
+                    border-bottom: 3px solid $icon_background_color
+                    background-color: $icon_background_color
+                    background-clip: content-box
+                    cursor: pointer
+                .icon-more
+                    @include icon_public_style
+                .icon-more-vert
+                    width: .2em
+                    height: .2em
+                    background: currentColor
+                    border-radius: 50%
+                    box-shadow: 0 -.4em, 0 .4em
+            .englishContent
+                padding: pxToEm($padding_top_bottom * 8) pxToEm($padding_left_right) 0 pxToEm($padding_top_bottom)
+                .englishWeekDay, .englishMonthAndDay
+                    font-size: 30px
+                .englishWeekDay
+                    letter-spacing: pxToEm($letter_spacing)
+                .englishMonthAndDay
+                    margin-bottom: pxToEm(5)
+            .chineseContent
+                padding-left: pxToEm($padding_top_bottom)
+                font-size: 14px
+                height: pxToEm(53)
+                .content
+                    .date
+                        margin-bottom: 8px
+                    .lunar
+                        margin-bottom: 8px
+                        .lunarYear
+                            margin-bottom: 2px
+            .listContainer
+                color: $color
+                padding: 0 pxToEm($padding_top_bottom)
+                margin-top: pxToEm($padding_top_bottom * 8)
+                .listTitle
+                    padding-bottom: pxToEm(6)
+                    font-size: 16px
+                    border-bottom: 1px solid $border_bottom
+                .remindersList
+                    padding: pxToEm($padding_left_right) 0 pxToEm($padding_left_right) 0
+                    .listItem
+                        display: flex
+                        align-items: center
+                        padding-top: pxToEm($padding_left_right / 2)
+                        .icon-check
+                            @include icon_public_style
+                            width: pxToEm(12)
+                            height: pxToEm(12)
+                            background-color: $icon_background_color
+                            border-radius: 50%
+                            margin-right: pxToEm(6)
+                            overflow: hidden
+                            &::before
+                                width: pxToEm(6)
+                                height: pxToEm(3)
+                                border-width: 0 0 2px 2px
+                                border-style: solid
+                                border-color: $icon_border_color
+                                -ms-transform: translate(-50%, -50%) rotate(-45deg)
+                                transform: translate(-50%, -50%) rotate(-45deg)
+    .calendarContainer
+        width: 100%
+        padding: pxToEm($padding_left_right)
+        letter-spacing: pxToEm($letter_spacing)
+        .headerYear
+            font-size: 20px
+            margin-bottom: pxToEm(40)
+            time.icon
+                font-size: 1em /* change icon size */
+                display: block
+                position: relative
+                width: 7em
+                height: 7em
+                margin-left: auto
+                background-color: #fff
+                border-radius: 0.6em
+                box-shadow: 0 1px 0 #bdbdbd, 0 2px 0 #fff, 0 3px 0 #bdbdbd, 0 4px 0 #fff, 0 5px 0 #bdbdbd, 0 0 0 1px #bdbdbd
+                overflow: hidden
+                -webkit-backface-visibility: hidden //  隐藏被旋转的 div 元素的背面
+                -webkit-transform: rotate(0deg) skewY(0deg)
+                -webkit-transform-origin: 50% 10%
+                transform-origin: 50% 10%
+                text-align: center
+                & *
+                    display: block
+                    width: 100%
+                    font-size: 1em
+                    font-weight: bold
+                    font-style: normal
+                strong
+                    position: absolute
+                    top: 0
+                    padding: 0.4em 0
+                    color: #fff
+                    background-color: $current_month_color
+                    border-bottom: 1px dashed $red_color
+                    box-shadow: 0 2px 0 $red_color
+                em
+                    position: absolute
+                    bottom: 0.3em
+                    color: #000
+            
+                span
+                    width: 100%
+                    font-size: 2.8em
+                    letter-spacing: -0.05em
+                    padding-top: 0.8em
+                    color: #2f2f2f
+                    font-weight: normal
+                &:hover, &:focus
+                    -webkit-animation: swing 0.6s ease-out
+                    animation: swing 0.6s ease-out
+        .yearContent
+            @include flex(center)
+            position: relative
+            overflow: hidden
+            height: 20px
+            width: pxToEm(420)
+            margin: 0 auto
+            .icon-arrow-left
+                @include icon_public_style
+                margin-right: pxToEm(10)
+                cursor: pointer
+                &::before
+                    height: .65em
+                    width: .65em
+                    border-style: solid
+                    border-width: 2px 0 0 2px
+                    -ms-transform: translate(-25%, -50%) rotate(-45deg)
+                    transform: translate(-25%, -50%) rotate(-45deg)
+                    transition: border-color .5s
+                &:hover::before
+                    border-color: $border_hover_color
+            .icon-arrow-right
+                @include icon_public_style
+                margin-left: pxToEm(10)
+                cursor: pointer
+                &::before
+                    height: .65em
+                    width: .65em
+                    border-style: solid
+                    border-width: 2px 0 0 2px
+                    -ms-transform: translate(-75%, -50%) rotate(135deg)
+                    transform: translate(-75%, -50%) rotate(135deg)
+                    transition: border-color .5s
+                &:hover::before
+                    border-color: $border_hover_color
+            .yearList
+                width: 100%
+                @include flex(center)
+                .year
+                    color: $month_item_color
+                    cursor: pointer
+                    transition: color .3s
+                .currentYearStyle
+                    @include current($current_month_color)
+        .monthList
+            padding: pxToEm($padding_top_bottom) 0
+            @include flex(baseline)
+            width: pxToEm(422)
+            margin: 0 auto
+            .monthItem
+                color: $month_item_color
+                cursor: pointer
+                padding: 10px 0
+                transition: color .3s
+            .currentMonthStyle
+                @include current($current_month_color)
+        .dateTable
+            table-layout: fixed
+            width: pxToEm(460)
+            border-collapse: collapse
+            margin: 0 auto
+            height: 360px
+            .headerWeek
+                .weekItem
+                    font-size: 18px
+                    font-weight: 600
+                    padding-bottom: pxToEm($padding_top_bottom)
+                .sunday
+                    color: $red_color
+            .mainDays
+                width: 100%
+                margin-bottom: 20px
+                .weekDays
+                    .day
+                        text-align: center
+                        font-weight: bold
+                        cursor: pointer
+                        transition: color .3s
+                        .lunarCalendar
+                            display: inline-block
+                            margin-top: 10px
+                        .festival
+                            display: inline-block
+                            margin-top: 10px
+                            color: $red_color
+                        .solarTerms
+                            display: inline-block
+                            margin-top: 10px
+                            color: $color_of_24_solar_terms
+                    [class=day]:hover
+                        color: $hover_date_color
+                    .todayStyle
+                        background-color: $background_color
+                        color: $color
+                        border-radius: 50%
+@-webkit-keyframes swing
+    0%
+        -webkit-transform: rotate(0deg)  skewY(0deg)
+    20%
+        -webkit-transform: rotate(12deg) skewY(4deg)
+    60%
+        -webkit-transform: rotate(-9deg) skewY(-3deg)
+    80%
+        -webkit-transform: rotate(6deg)  skewY(-2deg)
+    100%
+        -webkit-transform: rotate(0deg)  skewY(0deg)
+@keyframes swing
+    0%
+        transform: rotate(0deg)  skewY(0deg)
+    20%
+        transform: rotate(12deg) skewY(4deg)
+    60%
+        transform: rotate(-9deg) skewY(-3deg)
+    80%
+        transform: rotate(6deg)  skewY(-2deg)
+    100%
+        transform: rotate(0deg)  skewY(0deg)

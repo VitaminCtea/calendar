@@ -1,0 +1,36 @@
+@mixin icon_public_style
+    display: inline-block
+    height: 1em
+    width: 1em
+    font-size: 20px
+    box-sizing: border-box
+    text-indent: -9999px
+    vertical-align: middle
+    position: relative
+    &::before, &::after
+        content: ''
+        box-sizing: inherit
+        position: absolute
+        left: 50%
+        top: 50%
+        -ms-transform: translate(-50%, -50%)
+        transform: translate(-50%, -50%)
+
+@mixin box_shadow($color)
+    box-shadow: 2px 2px 10px 0px $color
+
+@mixin squareBar_box_shadow
+    @include box_shadow(#CC0000)
+
+@mixin container_box_shadow
+    @include box_shadow(#999)
+
+@mixin current($current_color)
+    font-size: 20px
+    font-weight: bold
+    color: $current_color
+
+@mixin flex($baseline)
+    display: flex
+    justify-content: space-between
+    align-items: $baseline
