@@ -13,11 +13,12 @@ body
 .viewContainer
     position: relative
     display: flex
-    width: pxToEm(900)
+    width: pxToEm(1300)
     @include container_box_shadow
     margin-top: 20px
     margin-left: 20px
     overflow: hidden
+    max-width: pxToEm(1250)
     .reminders
         position: absolute
         left: 0
@@ -39,6 +40,9 @@ body
                         font-size: 22px
                         font-weight: bold
                         margin-bottom: pxToEm(2)
+                        white-space: nowrap
+                    .lunar
+                        white-space: nowrap
                 .icon
                     display: flex
                     flex-direction: row

@@ -1,5 +1,5 @@
 import { lunarCalendar } from '../core/lunarCalendar'
-import { getTimeList, forEach, zeroPadding, getHash } from '../helper/util'
+import { getTimeList, zeroPadding, getHash } from '../helper/util'
 import { LunarCalendarData } from '../core/lunarCalendarData'
 
 class Strategies extends LunarCalendarData {
@@ -35,46 +35,13 @@ class Strategies extends LunarCalendarData {
         const m1 = date2.getMonth()
         const d1 = date2.getDate()
 
-        // 处理边界
-        // if (day <= 7) {
-        //     let temp = false
-        //     switch(obj.optionVal) {
-        //         case 1:
-        //             endDay = day
-        //             temp = true
-        //             break
-        //         case 4:
-        //             endDay = 4
-        //             break
-        //         case 7:
-        //             endDay = 7
-        //             break
-        //     }
-        //     startDay = temp ? day : 1
-        // } else {
-        //     switch(obj.optionVal) {
-        //         case 1:
-        //             startDay = day
-        //             endDay = startDay
-        //             break
-        //         case 4:
-        //             startDay = d - w
-        //             endDay = startDay + 3
-        //             break
-        //         case 7:
-        //             // 得出初始渲染是哪天
-        //             startDay = d - w
-        //             endDay = startDay + 6
-        //             break
-        //     }
-        // }
         switch (obj.optionVal) {
             case 1:
                 startDay = day
                 endDay = startDay
                 break
             case 4:
-                startDay = d - w
+                startDay = d - 1
                 endDay = startDay + 3
                 break
             case 7:
@@ -83,32 +50,6 @@ class Strategies extends LunarCalendarData {
                 endDay = startDay + 6
                 break
         }
-
-        // const date3 = new Date(year, month, 0)
-        // const lastDay = date3.getDate()
-
-        // // 标志位, 如果上个月的最后一天和当月的第一天在一起的话会产生错乱，所以要正确渲染上个月的最后一天
-        // let flag = false
-        // // 最后一天数组
-        // const days = [31, 30, 28,29]
-        // // 如果下个月起始月是1的话需要判断
-        // if (startDay === 1) {
-        //     // 获取上个月的最后一天是星期几
-        //     // 如果上个月的最后一天符合数组天数并且是周日的话，那么起始索引应该为上个月的最后一天
-        //     // 否则正常渲染
-        //     if (obj.optionVal === 7) {
-        //         if (days.includes(lastDay)) {
-        //             if (day > 1) {
-        //                 console.log('等于1')
-        //                 flag = true
-        //                 startDay = lastDay - w + 1
-        //                 endDay = startDay + 6
-        //             }
-        //         }
-        //     }
-        // }
-
-        // console.log(d)
 
         for (let i: number = startDay; i <= endDay; i++) {
             let { weekDay, cDay, IDayCn, isTerm, Term, lMonth } = lunarCalendar(year, month, i)
@@ -152,12 +93,7 @@ class Strategies extends LunarCalendarData {
 
         return html
     }
-    monthView(
-        year: number,
-        month: number,
-        day: number,
-        obj: { currentMonthWeekDay: number; currentTotalDays: number }
-    ) {
+    monthView(year: number, month: number) {
         let html = '<table class="view">'
         const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
         let next = 0
@@ -209,8 +145,11 @@ class Strategies extends LunarCalendarData {
             next = i
         }
 
+        let showMonth = (cMonth: number, i: number) =>
+            `${i === 1 ? `${zeroPadding(cMonth)}月${zeroPadding(i)}日` : zeroPadding(i)}`
+
         for (let i = 1; i <= 6 - w1; i++) {
-            const { isTerm, Term, IDayCn } = lunarCalendar(year, month, i)
+            const { isTerm, Term, IDayCn, cMonth } = lunarCalendar(year, month, i)
             next++
             const isCurrentDay = y1 === year && m2 === month && d4 === i
             const createHTML = isTerm
@@ -218,7 +157,10 @@ class Strategies extends LunarCalendarData {
                 <div class="c">
                     <span class="tableWeek">${weekArr[next]}</span>
                     <div class="other">
-                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${zeroPadding(i)}</span>
+                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${showMonth(
+                      cMonth,
+                      i
+                  )}</span>
                         <span class="${isCurrentDay ? 'currentLunarDay' : 'l'}">( ${Term} )</span>
                     </div>
                 </div>
@@ -227,7 +169,10 @@ class Strategies extends LunarCalendarData {
                 <div class="c">
                     <span class="tableWeek">${weekArr[next]}</span>
                     <div class="other">
-                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${zeroPadding(i)}</span>
+                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${showMonth(
+                      cMonth,
+                      i
+                  )}</span>
                         <span class="${isCurrentDay ? 'currentLunarDay' : 'l'}">( ${IDayCn} )</span>
                     </div>
                 </div>
@@ -237,10 +182,9 @@ class Strategies extends LunarCalendarData {
         }
 
         i = startDay + 1
-
         // 生成天数
         for (; i <= lastDay; i++) {
-            const { isTerm, Term, IDayCn } = lunarCalendar(year, month, i)
+            const { isTerm, Term, IDayCn, cMonth } = lunarCalendar(year, month, i)
             const isCurrentDay = y1 === year && m2 === month && d4 === i
             const createHTML = isTerm
                 ? `
@@ -253,7 +197,10 @@ class Strategies extends LunarCalendarData {
                             : ''
                     }
                     <div class="other">
-                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${zeroPadding(i)}</span>
+                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${showMonth(
+                      cMonth,
+                      i
+                  )}</span>
                         <span class="${isCurrentDay ? 'currentLunarDay' : 'l'}">( ${Term} )</span>
                     </div>
                 </div>
@@ -268,7 +215,10 @@ class Strategies extends LunarCalendarData {
                             : ''
                     }
                     <div class="other">
-                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${zeroPadding(i)}</span>
+                        <span class="${isCurrentDay ? 'currentDay' : 'd'}">${showMonth(
+                      cMonth,
+                      i
+                  )}</span>
                         <span class="${isCurrentDay ? 'currentLunarDay' : 'l'}">( ${IDayCn} )</span>
                     </div>
                 </div>
@@ -286,12 +236,12 @@ class Strategies extends LunarCalendarData {
         // 渲染出下个月的天，即：1， 2， 3
         for (i = 1; i <= 6 - week; i++) {
             // 获取下个月
-            const { isTerm, Term, IDayCn } = lunarCalendar(year, month + 1, i)
+            const { isTerm, Term, IDayCn, cMonth } = lunarCalendar(year, month + 1, i)
             const createHTML = isTerm
                 ? `
                 <div class="c">
                     <div class="other">
-                        <span class="disableD">${zeroPadding(i)}</span>
+                        <span class="disableD">${showMonth(cMonth, i)}</span>
                         <span class="disableL">( ${Term} )</span>
                     </div>
                 </div>
@@ -299,7 +249,7 @@ class Strategies extends LunarCalendarData {
                 : `
                 <div class="c">
                     <div class="other">
-                        <span class="disableD">${zeroPadding(i)}</span>
+                        <span class="disableD">${showMonth(cMonth, i)}</span>
                         <span class="disableL">( ${IDayCn} )</span>
                     </div>
                 </div>
@@ -470,7 +420,6 @@ export class ArrowStrategies {
         this.publicMethod(callback)
     }
     ['/week'](callback: (...rest: any) => void, flag: string) {
-        console.log(this.changeDay)
         if (flag === 'prevWeek') this.changeDay -= 7
         else if (flag === 'nextWeek') this.changeDay += 7
         this.publicMethod(callback)
