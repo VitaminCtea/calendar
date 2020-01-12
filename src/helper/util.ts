@@ -248,7 +248,14 @@ export function getHash() {
     const hashPath = location.hash
     const hashIndex = hashPath.indexOf('#')
     const paramIndex = hashPath.indexOf('?')
-    const hash = hashPath.slice(hashIndex + 1, paramIndex)
-    const param = hashPath.slice(paramIndex + 1)
+    let hash: string
+    let param: string
+    if (paramIndex < 0) {
+        hash = hashPath.slice(hashIndex + 1)
+        param = ''
+    } else {
+        hash = hashPath.slice(hashIndex + 1, paramIndex)
+        param = hashPath.slice(paramIndex + 1)
+    }
     return [hash, param]
 }

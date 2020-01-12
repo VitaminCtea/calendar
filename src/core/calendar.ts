@@ -16,6 +16,7 @@ import { createEvent } from '../helper/subScribe'
 import { SubScribeInterface } from '../types/index'
 import { Route } from './routing'
 import { strategies, ArrowStrategies } from '../views/strategy'
+import { mouseEvent } from './createReminders'
 
 function style(this: any, style: { [propName: string]: string }, FSM: string) {
     for (let key in style) {
@@ -213,16 +214,7 @@ export class Calendar {
                     path: '/month',
                     name: 'month',
                     callback: function() {
-                        that.setHTML(
-                            that.routerView!,
-                            {
-                                currentMonthWeekDay: that.currentMonthWeekDay,
-                                currentTotalDays: that.currentTotalDays
-                            },
-                            '',
-                            '月',
-                            'monthView'
-                        )
+                        that.setHTML(that.routerView!, {}, '', '月', 'monthView')
                         that.setLayerContent(['上个月', '下个月'])
                         that.arrowLeft!.dataset.type = that.arrowRight!.dataset.type = 'month'
                     }
@@ -691,6 +683,9 @@ export class Calendar {
         handleEvent.addHandler(prev, 'click', this.previous.bind(this))
         handleEvent.addHandler(next, 'click', this.next.bind(this))
 
+        // 提醒
+        mouseEvent()
+
         this.arrow = new ArrowStrategies(this.currentYear, this.currentMonth, this.currentDay)
 
         // 选择菜单显示隐藏
@@ -718,15 +713,7 @@ export class Calendar {
                 this.arrow.start(callback.bind(this), flag)
                 break
             case 'month':
-                callback = this.prevFunc(
-                    {
-                        currentMonthWeekDay: this.currentMonthWeekDay,
-                        currentTotalDays: this.currentTotalDays
-                    },
-                    '',
-                    '月',
-                    'monthView'
-                )
+                callback = this.prevFunc({}, '', '月', 'monthView')
                 this.arrow.start(callback.bind(this), flag)
                 break
             case 'year':

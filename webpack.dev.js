@@ -4,7 +4,7 @@ const path = require('path')
 
 module.exports = merge(common, {
     mode: 'development',
-    devtool: 'inline-souce-map',
+    devtool: 'inline-source-map',
     resolve: {
         extensions: ['.ts', '.js', '.sass', '.css'],
         alias: {

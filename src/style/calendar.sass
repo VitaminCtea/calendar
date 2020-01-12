@@ -33,7 +33,6 @@ body
                 justify-content: space-around
                 align-items: center
                 padding: pxToEm($padding_top_bottom)
-                border-bottom: 1px solid #ccc
                 .dateContent
                     width: pxToEm(100)
                     .date
@@ -55,6 +54,7 @@ body
                             position: absolute
                             left: 0
                             top: 110%
+                            z-index: 10
                             padding: 10px 20px
                             text-align: center
                             white-space: nowrap
@@ -65,7 +65,7 @@ body
                             transform: scale(0)
                             transform-origin: 50% 50%
                             transition: all .2s
-                            transition-delay: .2s  
+                            transition-delay: .2s
                         .icon-arrow-left1, .icon-arrow-right1
                             display: inline-block
                             @include icon_public_style
@@ -147,26 +147,66 @@ body
                     background-color: #ccc
                 .view
                     width: 100%
-                    height: calc(100% - 10px)
+                    height: calc(100%)
                     border-collapse: collapse
                     border-spacing: 0
-                    tbody
+                    box-sizing: border-box
+                    .tbody
                         width: 100%
+                        display: flex
+                        flex-direction: column
                         height: 100%
-                        tr 
-                            td
+                        border-left: 1px solid #ccc
+                        .nullTr
+                            height: 0
+                        .tr
+                            width: 100%
+                            position: relative
+                            flex: 1 1 calc( 100% / 7 )
+                            display: flex
+                            flex-direction: row
+                            overflow: hidden
+                            .reminderItem
+                                position: absolute
+                                left: 0
+                                top: 36%
+                                width: 99%
+                                box-sizing: border-box
+                                overflow: hidden
+                                z-index: 99
+                                .reminderContainer
+                                    display: flex
+                                    width: 100%
+                                    margin-top: 2px
+                                    background-color: transparent
+                                    padding-left: 5px
+                                    border-radius: 5px
+                                    box-sizing: border-box
+                                    .gridcell
+                                        width: 100%
+                                        background-color: transparent
+                                        height: 20px
+                                        &:last-child
+                                            border-top-right-radius: 5px
+                                            border-bottom-right-radius: 5px
+                            .td
                                 position: relative
-                                border: 1px solid #ccc
+                                border-top: 1px solid #ccc
+                                border-right: 1px solid #ccc
                                 font-weight: bold
+                                flex: 1 1 calc( 100% / 7 )
                                 .c
                                     position: absolute
                                     left: 50%
-                                    top: 10%
+                                    top: 5%
                                     transform: translate(-50%, 0)
                                     width: 100%
                                     text-align: center
+                                    display: inline-block
+                                    vertical-align: middle
                                     .other
                                         margin-top: 6px
+                                        white-space: nowrap
                                         .d
                                             color: #45403d
                                         .l
@@ -175,13 +215,13 @@ body
                                             color: #999
                                         .currentDay
                                             display: inline-block
-                                            width: 26px
-                                            height: 26px
+                                            width: 22px
+                                            height: 22px
                                             border-radius: 50%
                                             background-color: $current_date
                                             color: #fff
                                             vertical-align: middle
-                                            line-height: 26px
+                                            line-height: 22px
                                         .currentLunarDay
                                             display: inline-block
                                             vertical-align: middle

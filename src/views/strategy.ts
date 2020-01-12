@@ -27,7 +27,6 @@ class Strategies extends LunarCalendarData {
         let startDay = 0
 
         const date = new Date(year, month, day)
-        const d = date.getDate()
         const w = date.getDay()
 
         const date2 = new Date()
@@ -41,12 +40,12 @@ class Strategies extends LunarCalendarData {
                 endDay = startDay
                 break
             case 4:
-                startDay = d - 1
+                startDay = day
                 endDay = startDay + 3
                 break
             case 7:
                 // 得出初始渲染是哪天
-                startDay = d - w
+                startDay = day - w
                 endDay = startDay + 6
                 break
         }
@@ -94,7 +93,7 @@ class Strategies extends LunarCalendarData {
         return html
     }
     monthView(year: number, month: number) {
-        let html = '<table class="view">'
+        let html = '<div class="view" role="table"><div class="tbody" role="tbody">'
         const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
         let next = 0
         let i = 0
@@ -115,11 +114,11 @@ class Strategies extends LunarCalendarData {
         const y1 = date4.getFullYear()
         const m2 = date4.getMonth()
         const d4 = date4.getDate()
-
-        if (week === 0) {
-            html += '<tr>'
+        if (w1 === 6) {
+            html += '<div class="nullTr" role="tr">'
+        } else {
+            html += '<div class="tr" role="tr">'
         }
-
         for (let i = 0; i < d; i++) {
             const { isTerm, Term, IDayCn } = lunarCalendar(year, month - 1, lastDay1 - w1 + i)
             const createHTML = isTerm
@@ -141,7 +140,7 @@ class Strategies extends LunarCalendarData {
                     </div>
                 </div>
             `
-            html += `<td>${createHTML}</td>`
+            html += `<div class="td" role="td">${createHTML}</div>`
             next = i
         }
 
@@ -177,7 +176,7 @@ class Strategies extends LunarCalendarData {
                     </div>
                 </div>
             `
-            html += `<td>${createHTML}</td>`
+            html += `<div class="td" role="td">${createHTML}</div>`
             startDay = i
         }
 
@@ -225,10 +224,16 @@ class Strategies extends LunarCalendarData {
             `
 
             if ((i - 1 + d) % 7 === 0) {
+                html += `</div><div class="tr" role="tr"><div class="td" role="td">${createHTML}</div>`
                 //  换行
-                html += `<tr><td>${createHTML}</td>`
+                html += `<div class="reminderItem"><div class="reminderContainer">`
+                // 渲染reminder条
+                for (let i = 0; i < 7; i++) {
+                    html += '<div class="gridcell"></div>'
+                }
+                html += `</div></div>`
             } else {
-                html += `<td>${createHTML}</td>`
+                html += `<div class="td" role="td">${createHTML}</div>`
             }
         }
 
@@ -254,10 +259,10 @@ class Strategies extends LunarCalendarData {
                     </div>
                 </div>
             `
-            html += `<td>${createHTML}</td>`
+            html += `<div class="td" role="td">${createHTML}</div>`
         }
 
-        html += '</tr></table>'
+        html += '</div></div>'
 
         return html
     }
